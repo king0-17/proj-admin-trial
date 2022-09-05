@@ -89,7 +89,7 @@
                 :items="user_data.list"
                 :fields="fields"
             >
-                <template #cell(actions)="row">
+                <template #cell(actions)>
                     <!-- <b-button
                         size="sm"
                         @click="info(row.item, row.index, $event.target)"
