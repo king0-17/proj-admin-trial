@@ -1,4 +1,4 @@
-# vue-1peso-admin
+# ara-sss-admin
 
 ## Project setup
 ```
