@@ -61,4 +61,22 @@ small.form-text {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.form-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5em;
+}
+
+.multi-select {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-gap: 0.5em;
+}
+
+.multi-select-row {
+    display: grid;
+    grid-template-columns: 1fr 12fr;
+    align-items: center;
+}
 </style>

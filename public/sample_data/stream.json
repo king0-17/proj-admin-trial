@@ -6,18 +6,20 @@
             "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
             "hash": "xhd8es0dj",
             "exp_number": 1,
-            "exp_unit": "Hrs",
-            "status": 1
+            "exp_unit": "h",
+            "status": 1,
+            "updated_by": "masteradmin"
         },
         {
             "id": 2,
-            "stream_group_id": 1,
+            "stream_group_id": 2,
             "name": "Stream-03",
             "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
             "hash": "xhd8es0dj",
             "exp_number": 30,
-            "exp_unit": "Mins",
-            "status": 2
+            "exp_unit": "m",
+            "status": 2,
+            "updated_by": "masteradmin"
         },
         {
             "id": 3,
@@ -26,8 +28,9 @@
             "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
             "hash": "xhd8es0dj",
             "exp_number": 2,
-            "exp_unit": "Hrs",
-            "status": 1
+            "exp_unit": "h",
+            "status": 1,
+            "updated_by": "masteradmin"
         },
         {
             "id": 4,
@@ -36,8 +39,9 @@
             "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
             "hash": "xhd8es0dj",
             "exp_number": 30,
-            "exp_unit": "Mins",
-            "status": 0
+            "exp_unit": "m",
+            "status": 0,
+            "updated_by": "masteradmin"
         }
     ],
     "links": [{

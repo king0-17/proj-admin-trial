@@ -1,5 +1,7 @@
 export const masteradmin = [
     'administrators',
+    'stream-group',
     'stream',
-    'users',
+    'domain',
+    'log',
 ]

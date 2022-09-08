@@ -58,6 +58,16 @@ const routes = [{
                     import ( /* webpackChunkName: "admin" */ '../views/admin/modules/admin.vue')
             },
             {
+                path: 'stream-group',
+                name: 'stream-group',
+                meta: {
+                    requiresAuth: true,
+                    header_text: 'Stream Group',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "stream-group" */ '../views/admin/modules/stream-group.vue')
+            },
+            {
                 path: 'stream',
                 name: 'stream',
                 meta: {
@@ -67,6 +77,27 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "stream" */ '../views/admin/modules/stream.vue')
             },
+            {
+                path: 'domain',
+                name: 'domain',
+                meta: {
+                    requiresAuth: true,
+                    header_text: 'Domain',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "domain" */ '../views/admin/modules/domain.vue')
+            },
+            {
+                path: 'log',
+                name: 'log',
+                meta: {
+                    requiresAuth: true,
+                    header_text: 'Activity Log',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "log" */ '../views/admin/modules/log.vue')
+            },
+
             {
                 path: 'users',
                 name: 'users',

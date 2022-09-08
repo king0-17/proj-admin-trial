@@ -87,13 +87,18 @@
                 striped
                 hover
                 outlined
-                :items="stream_data.list"
+                :items="domain_data.list"
                 :fields="fields"
             >
                 <template #cell(url)="row">
-                    <div href="jdivvascript:void(0)" class="overflow-e">
+                    <div class="overflow-e">
                         {{ row.item.url }}
                     </div>
+                </template>
+                <template #cell(image)="row">
+                    <a href="javascript:void(0)" class="overflow-e">
+                        {{ row.item.image }}
+                    </a>
                 </template>
                 <template #cell(status)="row">
                     <span
@@ -134,8 +139,8 @@
             </b-table>
             <div class="spacer-20"></div>
             <Pagination
-                v-if="stream_data.list.length > 0"
-                :data="stream_data"
+                v-if="domain_data.list.length > 0"
+                :data="domain_data"
                 @emitpage="getList"
             />
         </div>
@@ -155,22 +160,6 @@
                         <b-row>
                             <b-col>
                                 <b-form-group
-                                    label="Stream Group"
-                                    label-for="stream-group"
-                                    :description="re.exp_number"
-                                >
-                                    <b-form-select
-                                        id="stream-group"
-                                        class="form-control"
-                                        v-model="pl.stream_group_id"
-                                        :options="group_options"
-                                    ></b-form-select>
-                                </b-form-group>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <b-form-group
                                     label="Name:"
                                     label-for="name"
                                     :description="re.name"
@@ -186,7 +175,7 @@
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-col cols="9">
+                            <b-col>
                                 <b-form-group
                                     label="URL:"
                                     label-for="url"
@@ -201,51 +190,65 @@
                                     ></b-form-input>
                                 </b-form-group>
                             </b-col>
+                        </b-row>
+                        <b-row>
                             <b-col>
                                 <b-form-group
-                                    label="Hash:"
-                                    label-for="hash"
-                                    :description="re.hash"
+                                    label="Image:"
+                                    label-for="image"
+                                    :description="re.url"
                                 >
                                     <b-form-input
-                                        id="hash"
-                                        v-model="pl.hash"
-                                        type="password"
-                                        placeholder="Enter hash"
-                                        autocomplete="new-password"
+                                        id="image"
+                                        v-model="pl.image"
+                                        type="text"
+                                        placeholder="Enter image"
+                                        required
+                                    ></b-form-input>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                        <br>
+                        <b-row>
+                            <b-col cols="4">
+                                <b-form-group
+                                    label="Stream Count"
+                                    label-for="stream_count"
+                                >
+                                    <b-form-input
+                                        id="stream_count"
+                                        v-model="stream_count"
+                                        type="number"
+                                        placeholder="Enter stream count"
+                                        min="0"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        maxlength="3"
                                         required
                                     ></b-form-input>
                                 </b-form-group>
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-col cols="9">
-                                <b-form-group
-                                    label="Expiration:"
-                                    label-for="Expiration"
-                                    :description="re.exp_number"
-                                >
-                                    <b-form-input
-                                        id="Expiration"
-                                        v-model="pl.exp_number"
-                                        type="number"
-                                        placeholder="Enter Expiration"
-                                        autocomplete="off"
-                                    ></b-form-input>
-                                </b-form-group>
-                            </b-col>
                             <b-col>
                                 <b-form-group
-                                    label="Unit"
-                                    label-for="Expiration"
-                                    :description="re.exp_number"
+                                    label="Streams"
+                                    label-for="streams"
+                                    :description="re.streams"
                                 >
-                                    <b-form-select
-                                        id="type"
-                                        class="form-control"
-                                        v-model="pl.exp_unit"
-                                        :options="unit_options"
-                                    ></b-form-select>
+                                    <div class="multi-select">
+                                        <div
+                                            v-for="n in stream_count_int"
+                                            :key="n"
+                                            class="multi-select-row"
+                                        >
+                                            <div>{{ n }}</div>
+                                            <b-form-select
+                                                id="streams"
+                                                class="form-control"
+                                                :options="stream_options"
+                                            ></b-form-select>
+                                        </div>
+                                    </div>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -285,24 +288,7 @@ export default {
             fields: [
                 { key: "name", label: "Name" },
                 { key: "url", label: "URL" },
-                { key: "hash", label: "Hash" },
-                {
-                    key: "exp_number",
-                    label: "Expiration",
-                    formatter: (value, key, item) => {
-                        return (
-                            value +
-                            " " +
-                            (item.exp_unit == "h"
-                                ? "Hours"
-                                : item.exp_unit == "m"
-                                ? "Minutes"
-                                : item.exp_unit == "s"
-                                ? "Seconds"
-                                : "")
-                        );
-                    },
-                },
+                { key: "image", label: "Image" },
 
                 { key: "status", label: "Status" },
                 { key: "updated_by", label: "Updated By" },
@@ -329,28 +315,39 @@ export default {
 
                 // { value: "d", text: "This one is disabled", disabled: true },
             ],
-            group_options: [
+            stream_options: [
                 {
                     value: null,
-                    text: "Select stream group",
+                    text: "Select stream",
+                    selected: true,
                 },
                 {
                     value: 1,
-                    text: "Stream Group 1",
+                    text: "Stream 1",
                 },
                 {
                     value: 2,
-                    text: "Stream Group 2",
+                    text: "Stream 2",
+                },
+                {
+                    value: 3,
+                    text: "Stream 3",
+                },
+                {
+                    value: 4,
+                    text: "Stream 4",
+                },
+                {
+                    value: 5,
+                    text: "Stream 5",
                 },
             ],
+            stream_count: 1,
             pl: {
                 id: null,
-                stream_group_id: null,
                 name: null,
                 url: null,
-                hash: null,
-                exp_number: null,
-                exp_unit: null,
+                image: null,
             },
             re: {
                 id: null,
@@ -364,15 +361,18 @@ export default {
         };
     },
     computed: {
-        ...mapState("stream", {
-            stream_data: "data",
+        ...mapState("domain", {
+            domain_data: "data",
         }),
+        stream_count_int() {
+            return this.stream_count ? parseInt(this.stream_count) : 0;
+        },
     },
     methods: {
-        ...mapActions("stream", {
-            streamGetList: "getList",
-            streamGetOne: "getOne",
-            streamCreate: "create",
+        ...mapActions("domain", {
+            domainGetList: "getList",
+            domainGetOne: "getOne",
+            domainCreate: "create",
         }),
         showForm(m, r) {
             var vm = this;
@@ -415,11 +415,11 @@ export default {
             //     pl.to = vm.filters.to;
             // }
 
-            vm.streamGetList(pl);
+            vm.domainGetList(pl);
         },
         async submit() {
             var vm = this;
-            const res = await vm.streamCreate(vm.pl);
+            const res = await vm.domainCreate(vm.pl);
 
             if (res.status == 422) {
                 var e = res.data.errors;
@@ -437,7 +437,7 @@ export default {
             var vm = this;
             vm.$swal({
                 title: "Are you sure?",
-                html: `This will <strong>delete</strong> ${r.name} from streams`,
+                html: `This will <strong>delete</strong> ${r.name} from domains`,
                 type: "warning",
                 showCancelButton: true,
                 padding: "2em",

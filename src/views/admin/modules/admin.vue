@@ -52,7 +52,7 @@
                                 type="text"
                                 class="form-control"
                                 id="search_key"
-                                placeholder="Search"
+                                placeholder="Username"
                                 v-model="filters.search_key"
                             />
                         </div>
@@ -289,6 +289,7 @@ export default {
                     label: "Last Logged In",
                 },
                 "status",
+                { key: "updated_by", label: "Updated By" },
                 { key: "actions", label: "Actions" },
             ],
             type_options: [
@@ -397,15 +398,9 @@ export default {
         },
         async remove(r) {
             var vm = this;
-            console.log(r);
-            // vm.$swal('Delete this user?')
-
             vm.$swal({
-                // title: "Are you sure?",
-                // text: `This will delete ${r.username}  from administrators?`,
-                html:
-                    `This is an <strong> ${r.username} </strong>, ` +
-                    "<strong>And other tags</strong>",
+                title: "Are you sure?",
+                html: `This will <strong>delete</strong> ${r.username} from administrators`,
                 type: "warning",
                 showCancelButton: true,
                 padding: "2em",

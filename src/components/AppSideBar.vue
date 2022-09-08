@@ -43,22 +43,12 @@
                     ><i class="fa fa-edit"></i> Note</a
                 >
             </li>
-            <!-- <li>
-                    <a href="#sidebar-tab-2">
-                        <i class="fa fa-folder"></i> Folders
-                    </a>
-            </li>-->
         </ul>
-        <!-- End .ext-tabs-sidebar -->
         <div class="tab-content">
             <div
                 id="sidebar-tab-1"
                 :class="`tab-pane ${tab == 1 ? 'active' : ''} clearfix`"
             >
-                <!-- ********** -->
-                <!-- NEW MODULE -->
-                <!-- ********** -->
-
                 <div class="sidebar-module">
                     <nav class="sidebar-nav-v2">
                         <ul>
@@ -75,6 +65,18 @@
                             </li>
                             <li
                                 :class="`${
+                                    $route.fullPath == '/console/stream-group'
+                                        ? 'page-arrow'
+                                        : ''
+                                }`"
+                            >
+                                <router-link to="/console/stream-group">
+                                    <i class="fa fa-th-large"></i>
+                                    Stream Group
+                                </router-link>
+                            </li>
+                            <li
+                                :class="`${
                                     $route.fullPath == '/console/stream'
                                         ? 'page-arrow'
                                         : ''
@@ -83,6 +85,30 @@
                                 <router-link to="/console/stream">
                                     <i class="fa fa-caret-square-o-right"></i>
                                     Stream
+                                </router-link>
+                            </li>
+                            <li
+                                :class="`${
+                                    $route.fullPath == '/console/domain'
+                                        ? 'page-arrow'
+                                        : ''
+                                }`"
+                            >
+                                <router-link to="/console/domain">
+                                    <i class="fa fa-link"></i>
+                                    Domain
+                                </router-link>
+                            </li>
+                            <li
+                                :class="`${
+                                    $route.fullPath == '/console/log'
+                                        ? 'page-arrow'
+                                        : ''
+                                }`"
+                            >
+                                <router-link to="/console/log">
+                                    <i class="fa fa-eye"></i>
+                                    Activity Log
                                 </router-link>
                             </li>
                         </ul>
