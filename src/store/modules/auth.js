@@ -5,8 +5,15 @@ const state = {
     profile: {
         id: 0,
         username: '',
-        user_type_id: '',
-        money: 0
+        type: 0,
+        isAdmin: false,
+        isDeveloper: false,
+        isEngineer: false,
+        isManager: false,
+        status: 0,
+        email: '',
+        first_name: '',
+        last_name: '',
     },
 }
 
@@ -18,30 +25,31 @@ const actions = {
                 message: '',
                 user_id: 0,
             }
-            $api.post('/login', pl, {})
+            $api.post('auth/login', pl, {})
                 .then(async function(res) {
-                    temp.status = res.data.status
-                    if (res.data.status == 1) {
-                        await commit('setToken', res.data.token)
-                        await dispatch('getProfile')
+                    // console.log(res)
+                    // console.log(temp)
+                    temp.status == res.status
+                    if (res.status == 200) {
+                        await commit('setToken', res.data)
 
-                    } else if (res.data.status == 2) {
-                        temp.user_id = res.data.user_id
-                    } else {
-                        temp.message = 'wrong username or password'
+                        // await dispatch('getProfile')
+                    } else if (res.status == 401) {
+                        temp.message = res.data.message
+
                     }
-                    resolve(temp);
+
+                    resolve(res);
                 })
                 .catch(function(err) {
-                    console.log('error occured', err)
-                    resolve(temp);
+                    console.log(err.response.data.message)
                 })
 
         })
     },
     logoutUser({ commit, getters }) {
         return new Promise(function(resolve) {
-            $api.post('/logout', {}, {
+            $api.get('auth/logout', {
                 headers: { 'Authorization': getters.token_bearer }
             }).then(function() {
                 commit('desToken')
@@ -59,27 +67,24 @@ const actions = {
     getProfile({ commit, getters, dispatch }) {
         return new Promise(function(resolve) {
             if (getters.authenticated) {
-                $api.post('/profile', {}, {
+                $api.get('auth/me', {
                         headers: { 'Authorization': getters.token_bearer }
                     })
                     .then(function(res) {
-                        commit('setUser', res.data.data)
-                        if (res.data.status == 1) {
-                            commit('setUser', res.data.data)
+                        if (res.status == 200) {
+                            commit('setUser', res.data)
                             resolve(true)
                         } else {
                             dispatch('logoutUser')
                         }
                     })
                     .catch(function(err) {
-                        console.log('error occured', err)
-                        dispatch('logoutUser')
                         if (err.response.status == 401) {
                             dispatch('logoutUser').then(() => {
                                 window.location.reload()
                             })
                         }
-                        resolve(true)
+                        // resolve(true)
                     })
             } else {
                 resolve(true)
@@ -116,8 +121,8 @@ const actions = {
 
 const mutations = {
     setToken(state, t) {
-        $cookies.set('token', t)
-        state.token = t;
+        $cookies.set('token', t.access_token)
+        state.token = t.access_token;
 
     },
     desToken(state) {
@@ -128,15 +133,29 @@ const mutations = {
         var s = state
         s.profile.id = d.id
         s.profile.username = d.username
-        s.profile.user_type_id = d.user_type_id
-        s.profile.money = d.money
+        s.profile.type = d.type
+        s.profile.isAdmin = d.isAdmin
+        s.profile.isDeveloper = d.isDeveloper
+        s.profile.isEngineer = d.isEngineer
+        s.profile.isManager = d.isManager
+        s.profile.status = d.status
+        s.profile.email = d.email
+        s.profile.first_name = d.first_name
+        s.profile.last_name = d.last_name
     },
     desUser(state) {
         var s = state
         s.profile.id = ''
         s.profile.username = ''
-        s.profile.user_type_id = ''
-            // s.profile.money = 0
+        s.profile.type = ''
+        s.profile.isAdmin = ''
+        s.profile.isDeveloper = ''
+        s.profile.isEngineer = ''
+        s.profile.isManager = ''
+        s.profile.status = ''
+        s.profile.email = ''
+        s.profile.first_name = ''
+        s.profile.last_name = ''
     },
     setMoney(state, amt) {
         state.profile.money += amt
@@ -155,7 +174,7 @@ const getters = {
         return state.profile.id
     },
     user_type(state) {
-        return state.profile.user_type_id
+        return state.profile.type
     },
     profile(state) {
         return state.profile

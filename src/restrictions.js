@@ -1,7 +1,5 @@
-export const admin = [
-    'dashboard',
-]
-
-export const jojo = [
+export const masteradmin = [
+    'administrators',
+    'stream',
     'users',
 ]

@@ -50,4 +50,15 @@ span.label {
 .date-input.form-control {
     width: 99px !important;
 }
+
+small.form-text {
+    color: red !important;
+}
+
+.overflow-e {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>

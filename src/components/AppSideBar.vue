@@ -33,10 +33,15 @@
         <div class="sidebar-line"></div>
 
         <ul class="ext-tabs-sidebar">
-            <li class="active">
-                <a href="#sidebar-tab-1">
+            <li :class="`${tab == 1 ? 'active' : ''}`">
+                <a href="#sidebar-tab-1" @click.prevent="tab = 1">
                     <i class="fa fa-bars"></i> Navigation
                 </a>
+            </li>
+            <li :class="`${tab == 2 ? 'active' : ''}`">
+                <a href="#sidebar-tab-2" @click.prevent="tab = 2"
+                    ><i class="fa fa-edit"></i> Note</a
+                >
             </li>
             <!-- <li>
                     <a href="#sidebar-tab-2">
@@ -46,7 +51,10 @@
         </ul>
         <!-- End .ext-tabs-sidebar -->
         <div class="tab-content">
-            <div id="sidebar-tab-1" class="tab-pane active clearfix">
+            <div
+                id="sidebar-tab-1"
+                :class="`tab-pane ${tab == 1 ? 'active' : ''} clearfix`"
+            >
                 <!-- ********** -->
                 <!-- NEW MODULE -->
                 <!-- ********** -->
@@ -54,30 +62,52 @@
                 <div class="sidebar-module">
                     <nav class="sidebar-nav-v2">
                         <ul>
-                            <!-- <li
-                                :class="`${
-                                    $route.fullPath == '/admin/dashboard'
-                                        ? 'page-arrow'
-                                        : ''
-                                }`"
-                            >
-                                <router-link to="/admin/dashboard">
-                                    <i class="fa fa-dashboard"></i> Dashboard
-                                </router-link>
-                            </li> -->
                             <li
                                 :class="`${
-                                    $route.fullPath == '/admin/users'
+                                    $route.fullPath == '/console/administrators'
                                         ? 'page-arrow'
                                         : ''
                                 }`"
                             >
-                                <router-link to="/admin/users">
-                                    <i class="fa fa-users"></i> Users
+                                <router-link to="/console/administrators">
+                                    <i class="fa fa-user-md"></i> Administrator
+                                </router-link>
+                            </li>
+                            <li
+                                :class="`${
+                                    $route.fullPath == '/console/stream'
+                                        ? 'page-arrow'
+                                        : ''
+                                }`"
+                            >
+                                <router-link to="/console/stream">
+                                    <i class="fa fa-caret-square-o-right"></i>
+                                    Stream
                                 </router-link>
                             </li>
                         </ul>
                     </nav>
+                </div>
+            </div>
+            <div
+                id="sidebar-tab-2"
+                :class="`tab-pane ${tab == 2 ? 'active' : ''} clearfix`"
+            >
+                <div class="sidebar-module">
+                    <textarea
+                        id="note"
+                        class="form-control noresizing"
+                        placeholder="Note"
+                        required=""
+                        aria-required="true"
+                    ></textarea>
+                    <div class="spacer-10"></div>
+                    <button
+                        class="btn btn-block btn-primary"
+                        onclick="save_note()"
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
@@ -90,6 +120,11 @@
 import { mapActions } from "vuex";
 export default {
     name: "AppSideBar",
+    data() {
+        return {
+            tab: 1,
+        };
+    },
     methods: {
         ...mapActions("auth", {
             authLogout: "logoutUser",

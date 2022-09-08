@@ -129,9 +129,8 @@ export default {
             }
 
             const res = await vm.authLogin(vm.payload);
-
-            if (res.status == 1) {
-                this.$router.push("/admin").catch(() => {});
+            if (res.status == 200) {
+                this.$router.push("/console").catch(() => {});
                 // window.location.reload(); //router guard will redirect
             } else {
                 vm.$bvToast.show("top-center-toast");

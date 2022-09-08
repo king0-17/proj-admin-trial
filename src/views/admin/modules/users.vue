@@ -5,54 +5,55 @@
                 <div class="pull-left">
                     <form>
                         <!-- <div class="toolbar-field">
-                        <strong>Date from</strong>
-                        <b-input-group class="mb-3">
-                            <b-form-input
-                                id="example-input"
-                                class="date-input"
-                                v-model="filters.date_from"
-                                type="text"
-                                placeholder="YYYY-MM-DD"
-                                autocomplete="off"
-                            ></b-form-input>
-                            <b-input-group-append>
-                                <b-form-datepicker
+                            <strong>Date from</strong>
+                            <b-input-group class="mb-3">
+                                <b-form-input
+                                    id="example-input"
+                                    class="date-input"
                                     v-model="filters.date_from"
-                                    button-only
-                                    right
-                                    locale="en-US"
-                                ></b-form-datepicker>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </div>
-                    <div class="toolbar-field">
-                        <strong>Date to</strong>
-                        <b-input-group class="mb-3">
-                            <b-form-input
-                                id="example-input"
-                                class="date-input"
-                                v-model="filters.date_to"
-                                type="text"
-                                placeholder="YYYY-MM-DD"
-                                autocomplete="off"
-                            ></b-form-input>
-                            <b-input-group-append>
-                                <b-form-datepicker
+                                    type="text"
+                                    placeholder="YYYY-MM-DD"
+                                    autocomplete="off"
+                                ></b-form-input>
+                                <b-input-group-append>
+                                    <b-form-datepicker
+                                        v-model="filters.date_from"
+                                        button-only
+                                        right
+                                        locale="en-US"
+                                    ></b-form-datepicker>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </div>
+                        <div class="toolbar-field">
+                            <strong>Date to</strong>
+                            <b-input-group class="mb-3">
+                                <b-form-input
+                                    id="example-input"
+                                    class="date-input"
                                     v-model="filters.date_to"
-                                    button-only
-                                    right
-                                    locale="en-US"
-                                ></b-form-datepicker>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </div> -->
+                                    type="text"
+                                    placeholder="YYYY-MM-DD"
+                                    autocomplete="off"
+                                ></b-form-input>
+                                <b-input-group-append>
+                                    <b-form-datepicker
+                                        v-model="filters.date_to"
+                                        button-only
+                                        right
+                                        locale="en-US"
+                                    ></b-form-datepicker>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </div> -->
                         <div class="toolbar-field">
                             <strong>Username</strong>
-                            <input
+                            <b-input
                                 type="text"
                                 class="form-control"
                                 id="search_key"
                                 placeholder="Search"
+                                v-model="filters.search_key"
                             />
                         </div>
                         <div class="toolbar-field">
@@ -89,17 +90,15 @@
                 :items="user_data.list"
                 :fields="fields"
             >
-                <template #cell(actions)>
-                    <!-- <b-button
-                        size="sm"
-                        @click="info(row.item, row.index, $event.target)"
-                        class="mr-1"
+                <template #cell(status)="row">
+                    <span
+                        :class="`label label-${
+                            row.item.status ? 'success' : 'danger'
+                        }`"
+                        >{{ row.item.status ? "Active" : "Inactive" }}</span
                     >
-                        Info modal
-                    </b-button>
-                    <b-button size="sm" @click="row.toggleDetails">
-                        {{ row.detailsShowing ? "Hide" : "Show" }} Details
-                    </b-button> -->
+                </template>
+                <template #cell(actions)>
                     <b-button
                         class="mb-0"
                         variant="warning"
@@ -118,58 +117,7 @@
                     </b-button>
                 </template>
             </b-table>
-            <!-- <table
-                class="table table-bordered table-striped"
-                id="tb1"
-                data-rt-breakpoint="600"
-            >
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th><a href="javascript:void(0)">Username</a></th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Last Logged In</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="r in user_data.list" :key="r.id">
-                        <td>{{ r.firstname + " " + r.lastname }}</td>
-                        <td>{{ r.username }}</td>
-                        <td>{{ formatUserType(r.user_type_id) }}</td>
-                        <td>
-                            <span
-                                :class="`label label-${
-                                    r.status ? 'success' : 'danger'
-                                }`"
-                                >{{ r.status ? "Active" : "Inactive" }}</span
-                            >
-                        </td>
-                        <td>{{ r.last_login }}</td>
-                        <td>
-                            <b-button
-                                class="mb-0"
-                                variant="warning"
-                                size="sm"
-                                @click="$bvModal.show('modal-create')"
-                            >
-                                <i class="fa fa-fw text-white"></i>
-                            </b-button>
-                            <b-button
-                                class="mb-0"
-                                variant="danger"
-                                size="sm"
-                                @click="$swal('Delete this user?')"
-                            >
-                                <i class="fa fa-trash-o text-white"></i>
-                            </b-button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
             <div class="spacer-20"></div>
-
             <Pagination
                 v-if="user_data.list.length > 0"
                 :data="user_data"
@@ -241,6 +189,7 @@ export default {
             filters: {
                 date_from: "",
                 date_to: "",
+                search_key: "",
             },
             fields: [
                 {
@@ -272,8 +221,10 @@ export default {
     },
     methods: {
         ...mapActions("user", {
-            usersGetList: "getList",
+            userGetList: "getList",
+            userGetOne: "getOne",
         }),
+
         getList(n) {
             var vm = this;
 
@@ -291,20 +242,20 @@ export default {
             //     vm.filters.to = "";
             // }
 
-            // if (vm.filters.search_key) {
-            //     pl.search_key = vm.filters.search_key;
-            // }
+            if (vm.filters.search_key) {
+                pl.search_key = vm.filters.search_key;
+            }
 
             // if (vm.filters.from && vm.filters.to && vm.filters.to) {
             //     pl.from = vm.filters.from;
             //     pl.to = vm.filters.to;
             // }
 
-            vm.usersGetList(pl);
+            vm.userGetList(pl);
         },
     },
     mounted() {
-        this.getList(1);
+        // this.getList(1);a
     },
 };
 </script>

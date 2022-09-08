@@ -16,8 +16,10 @@
         <div class="header-main-bottom">
             <div class="pull-left">
                 <b-breadcrumb>
-                    <b-breadcrumb-item active>Admin</b-breadcrumb-item>
-                    <b-breadcrumb-item active>Users</b-breadcrumb-item>
+                    <b-breadcrumb-item active class="text-capitalize">{{
+                        $route.meta.header_text
+                    }}</b-breadcrumb-item>
+                    <!-- <b-breadcrumb-item active>Users</b-breadcrumb-item> -->
                 </b-breadcrumb>
             </div>
             <!-- <div class="pull-right">
@@ -30,5 +32,6 @@
 <script>
 export default {
     name: "AppHeader",
+    mounted() {},
 };
 </script>

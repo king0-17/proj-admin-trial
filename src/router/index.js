@@ -33,19 +33,39 @@ const routes = [{
         ]
     },
     {
-        path: '/admin',
+        path: '/console',
         component: () =>
             import ( /* webpackChunkName: "admin" */ '../views/admin/index.vue'),
         children: [{
                 path: '/',
-                redirect: 'dashboard'
+                redirect: 'administrators'
+            },
+            // {
+            //     path: 'dashboard',
+            //     name: 'dashboard',
+            //     meta: { requiresAuth: true },
+            //     component: () =>
+            //         import ( /* webpackChunkName: "dashboard" */ '../views/admin/modules/dashboard.vue')
+            // },
+            {
+                path: 'administrators',
+                name: 'administrators',
+                meta: {
+                    requiresAuth: true,
+                    header_text: 'Administrators',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "admin" */ '../views/admin/modules/admin.vue')
             },
             {
-                path: 'dashboard',
-                name: 'dashboard',
-                meta: { requiresAuth: true },
+                path: 'stream',
+                name: 'stream',
+                meta: {
+                    requiresAuth: true,
+                    header_text: 'Stream',
+                },
                 component: () =>
-                    import ( /* webpackChunkName: "dashboard" */ '../views/admin/modules/dashboard.vue')
+                    import ( /* webpackChunkName: "stream" */ '../views/admin/modules/stream.vue')
             },
             {
                 path: 'users',
@@ -54,6 +74,7 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "users" */ '../views/admin/modules/users.vue')
             },
+
         ]
     },
 ]
@@ -79,10 +100,7 @@ function getRestriction(user_type) {
     var access = []
     switch (user_type) {
         case 1:
-            access = restrictions.admin
-            break
-        case 2:
-            access = restrictions.jojo
+            access = restrictions.masteradmin
             break
     }
     return access
