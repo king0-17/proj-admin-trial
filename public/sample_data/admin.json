@@ -1,0 +1,128 @@
+{
+    "list": [{
+            "id": 1,
+            "first_name": "Jose",
+            "last_name": "Rizal",
+            "username": "jprizal30",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 2,
+            "first_name": "John",
+            "last_name": "Baptism",
+            "username": "sanjuan4",
+            "email": "sample@xyz.com",
+            "type": 2,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 3,
+            "first_name": "Andres",
+            "last_name": " Bonifactio",
+            "username": "katips8999",
+            "email": "sample@xyz.com",
+            "type": 2,
+            "status": 0,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 4,
+            "first_name": "Emilio",
+            "last_name": " Aguinaldo",
+            "username": "etibakreppin",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 0,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 5,
+            "first_name": "Renz",
+            "last_name": " Remigio",
+            "username": "akopogi01",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 6,
+            "first_name": "Jose",
+            "last_name": "Rizal",
+            "username": "jprizal30",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 7,
+            "first_name": "John",
+            "last_name": "Baptism",
+            "username": "sanjuan4",
+            "email": "sample@xyz.com",
+            "type": 2,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 8,
+            "first_name": "Andres",
+            "last_name": " Bonifactio",
+            "username": "katips8999",
+            "email": "sample@xyz.com",
+            "type": 2,
+            "status": 0,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 9,
+            "first_name": "Emilio",
+            "last_name": " Aguinaldo",
+            "username": "etibakreppin",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 0,
+            "last_login": "2022-09-07 14:00:28"
+        },
+        {
+            "id": 10,
+            "first_name": "Renz",
+            "last_name": " Remigio",
+            "username": "akopogi01",
+            "email": "sample@xyz.com",
+            "type": 1,
+            "status": 1,
+            "last_login": "2022-09-07 14:00:28"
+        }
+    ],
+    "links": [{
+            "label": "Previous",
+            "active": false
+        },
+        {
+            "label": "1",
+            "active": true
+        },
+        {
+            "label": "2",
+            "active": false
+        },
+        {
+            "label": "3",
+            "active": false
+        },
+        {
+            "label": "Next",
+            "active": false
+        }
+    ],
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 3,
+    "total": 3
+}

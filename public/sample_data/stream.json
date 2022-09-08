@@ -1,0 +1,68 @@
+{
+    "list": [{
+            "id": 1,
+            "stream_group_id": 1,
+            "name": "Stream-01",
+            "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+            "hash": "ara-sss-api",
+            "exp_number": 1,
+            "exp_unit": "Hrs",
+            "status": 1
+        },
+        {
+            "id": 2,
+            "stream_group_id": 1,
+            "name": "Stream-02",
+            "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+            "hash": "ara-sss-api",
+            "exp_number": 30,
+            "exp_unit": "Mins",
+            "status": 2
+        },
+        {
+            "id": 3,
+            "stream_group_id": 1,
+            "name": "Stream-01",
+            "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+            "hash": "ara-sss-api",
+            "exp_number": 1,
+            "exp_unit": "Hrs",
+            "status": 1
+        },
+        {
+            "id": 4,
+            "stream_group_id": 1,
+            "name": "Stream-02",
+            "url": "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+            "hash": "ara-sss-api",
+            "exp_number": 30,
+            "exp_unit": "Mins",
+            "status": 0
+        }
+    ],
+    "links": [{
+            "label": "Previous",
+            "active": false
+        },
+        {
+            "label": "1",
+            "active": true
+        },
+        {
+            "label": "2",
+            "active": false
+        },
+        {
+            "label": "3",
+            "active": false
+        },
+        {
+            "label": "Next",
+            "active": false
+        }
+    ],
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 3,
+    "total": 3
+}
