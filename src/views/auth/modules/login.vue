@@ -97,45 +97,7 @@
                 </form> -->
             </div>
         </div>
-        <table class="table-bordered" style="width: 100%; font-size: 11px;" v-if="env.VUE_APP_MODE=='development'">
-                <tbody>
-                    <tr>
-                        <td>VUE_APP_API_URL: {{ env.VUE_APP_API_URL }}</td>
-                    </tr>
-                    <tr>
-                        <td>VUE_APP_SOCKET: {{ env.VUE_APP_SOCKET }}</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            VUE_APP_WEBSOCKET_KEY:
-                            {{ env.VUE_APP_WEBSOCKET_KEY }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            VUE_APP_WEBSOCKET_SERVER:
-                            {{ env.VUE_APP_WEBSOCKET_SERVER }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            VUE_APP_PUSHER_APP_KEY:
-                            {{ env.VUE_APP_PUSHER_APP_KEY }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            VUE_APP_PUSHER_APP_CLUSTER:
-                            {{ env.VUE_APP_PUSHER_APP_CLUSTER }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>VUE_APP_MODE: {{ env.VUE_APP_MODE }}</td>
-                    </tr>
-                </tbody>
-            </table>
         <footer id="login-footer">
-            
             <strong>Copyright © 2022 .ARA</strong>
             <div class="spacer-5"></div>
             <small> All rights reserved.</small>
@@ -155,11 +117,7 @@ export default {
             },
         };
     },
-    computed: {
-        env() {
-            return process.env;
-        },
-    },
+    computed: {},
     methods: {
         ...mapActions("auth", {
             authLogin: "loginUser",
