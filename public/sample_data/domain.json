@@ -1,7 +1,6 @@
 {
     "list": [{
             "id": 1,
-            "stream_group_id": 1,
             "name": "WPC2021",
             "url": "https://wpc2021.live",
             "image": "sample.jpg",
@@ -11,7 +10,6 @@
         },
         {
             "id": 2,
-            "stream_group_id": 2,
             "name": "WPC2022",
             "url": "https://wpc2022.live",
             "image": "sample.jpg",
@@ -21,7 +19,6 @@
         },
         {
             "id": 3,
-            "stream_group_id": 2,
             "name": "MBC2023",
             "url": "https://mbc2023.live",
             "image": "sample.jpg",

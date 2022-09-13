@@ -105,13 +105,6 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "users" */ '../views/admin/modules/users.vue')
             },
-            {
-                path: 'variables',
-                name: 'variables',
-                meta: { requiresAuth: true },
-                component: () =>
-                    import ( /* webpackChunkName: "variables" */ '../views/admin/modules/variables.vue')
-            },
 
         ]
     },
