@@ -116,16 +116,16 @@
                         pill
                         @click="showForm('edit', row.item)"
                     >
-                        <i class="fa fa-fw"></i>
+                        Edit
                     </b-button>
-                    <b-button
+                    <!-- <b-button
                         class="mb-0"
                         variant="outline-secondary"
                         size="sm"
                         pill
                     >
                         <i class="fa fa-power-off"></i>
-                    </b-button>
+                    </b-button> -->
                     <b-button
                         class="mb-0"
                         variant="outline-secondary"
@@ -133,7 +133,16 @@
                         pill
                         @click="remove(row.item)"
                     >
-                        <i class="fa fa-trash-o"></i>
+                        Delete
+                    </b-button>
+                    <b-button
+                        class="mb-0"
+                        variant="outline-secondary"
+                        size="sm"
+                        pill
+                        @click="showStreams(row.item)"
+                    >
+                        View Streams
                     </b-button>
                 </template>
             </b-table>
@@ -148,7 +157,7 @@
         <b-modal id="modal-form" centered @hidden="reset()">
             <template #modal-header>
                 <h5 class="modal-head-title">
-                    {{ mode == "edit" ? "Edit" : "Add new" }} stream
+                    {{ mode == "edit" ? "Edit" : "Add new" }} domain
                 </h5>
                 <!-- <button class="close" @click="$bvModal.hide('modal-form')">×</button> -->
             </template>
@@ -157,6 +166,21 @@
                     <!-- <b-form @submit="onSubmit" @reset="onReset"> -->
 
                     <b-form autocomplete="off" @submit.prevent="submit()">
+                        <b-row>
+                            <b-col>
+                                <b-form-group
+                                    label="Stream Group"
+                                    label-for="stream-group"
+                                >
+                                    <b-form-select
+                                        id="stream-group"
+                                        class="form-control"
+                                        v-model="pl.stream_group_id"
+                                        :options="group_options"
+                                    ></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
                         <b-row>
                             <b-col>
                                 <b-form-group
@@ -208,50 +232,6 @@
                                 </b-form-group>
                             </b-col>
                         </b-row>
-                        <br>
-                        <b-row>
-                            <b-col cols="4">
-                                <b-form-group
-                                    label="Stream Count"
-                                    label-for="stream_count"
-                                >
-                                    <b-form-input
-                                        id="stream_count"
-                                        v-model="stream_count"
-                                        type="number"
-                                        placeholder="Enter stream count"
-                                        min="0"
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        maxlength="3"
-                                        required
-                                    ></b-form-input>
-                                </b-form-group>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <b-form-group
-                                    label="Streams"
-                                    label-for="streams"
-                                    :description="re.streams"
-                                >
-                                    <div class="multi-select">
-                                        <div
-                                            v-for="n in stream_count_int"
-                                            :key="n"
-                                            class="multi-select-row"
-                                        >
-                                            <div>{{ n }}</div>
-                                            <b-form-select
-                                                id="streams"
-                                                class="form-control"
-                                                :options="stream_options"
-                                            ></b-form-select>
-                                        </div>
-                                    </div>
-                                </b-form-group>
-                            </b-col>
-                        </b-row>
                     </b-form>
                 </b-container>
             </template>
@@ -266,6 +246,40 @@
                     Submit
                 </button>
             </template>
+        </b-modal>
+        <b-modal id="modal-stream-list" centered size="xl" scrollable>
+            <template #modal-header>
+                <h5 class="modal-head-title">View Streams</h5>
+            </template>
+            <template>
+                <b-table striped hover outlined :items="stream_list">
+                    <template #cell(url)="row">
+                        <div class="overflow-e">
+                            {{ row.item.url }}
+                        </div>
+                    </template>
+                    <template #cell(status)="row">
+                        <span
+                            :class="`label label-${
+                                row.item.status ? 'primary' : 'default'
+                            }`"
+                            >{{ row.item.status ? "Active" : "Inactive" }}</span
+                        >
+                    </template>
+                </b-table>
+            </template>
+
+            <!-- <template #modal-footer>
+                <button
+                    class="btn btn-default"
+                    @click="$bvModal.hide('modal-stream-list')"
+                >
+                    Cancel
+                </button>
+                <button class="btn btn-success" @click.prevent="submit()">
+                    Submit
+                </button>
+            </template> -->
         </b-modal>
     </div>
 </template>
@@ -315,6 +329,20 @@ export default {
 
                 // { value: "d", text: "This one is disabled", disabled: true },
             ],
+            group_options: [
+                {
+                    value: null,
+                    text: "Select stream group",
+                },
+                {
+                    value: 1,
+                    text: "Stream Group 1",
+                },
+                {
+                    value: 2,
+                    text: "Stream Group 2",
+                },
+            ],
             stream_options: [
                 {
                     value: null,
@@ -342,21 +370,171 @@ export default {
                     text: "Stream 5",
                 },
             ],
-            stream_count: 1,
+            stream_list: [
+                {
+                    name: "Stream-01",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-01",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-01",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-01",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 0,
+                },
+                {
+                    name: "Stream-03",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+                {
+                    name: "Stream-04",
+                    url: "https://sample.stream2312jnqewj109823u203u102312231.23213/",
+                    hash: "xhd8es0dj",
+                    status: 1,
+                },
+            ],
             pl: {
                 id: null,
                 name: null,
                 url: null,
                 image: null,
+                stream_group_id: null,
             },
             re: {
                 id: null,
-                stream_group_id: null,
                 name: null,
                 url: null,
-                hash: null,
-                exp_number: null,
-                exp_unit: null,
+                image: null,
+                stream_group_id: null,
             },
         };
     },
@@ -364,9 +542,6 @@ export default {
         ...mapState("domain", {
             domain_data: "data",
         }),
-        stream_count_int() {
-            return this.stream_count ? parseInt(this.stream_count) : 0;
-        },
     },
     methods: {
         ...mapActions("domain", {
@@ -381,9 +556,7 @@ export default {
                 vm.pl.id = r.id;
                 vm.pl.name = r.name;
                 vm.pl.url = r.url;
-                vm.pl.hash = r.hash;
-                vm.pl.exp_number = r.exp_number;
-                vm.pl.exp_unit = r.exp_unit;
+                vm.pl.image = r.image;
                 vm.pl.stream_group_id = r.stream_group_id;
             }
 
@@ -445,8 +618,11 @@ export default {
                 return result.isConfirmed;
             });
         },
+        async showStreams() {
+            var vm = this;
+            vm.$bvModal.show("modal-stream-list");
+        },
         reset() {
-            console.log("reset");
             var vm = this;
 
             vm.pl.id = null;
@@ -472,4 +648,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#modal-stream-list .modal-body {
+    /* max-height: 500px; */
+    /* overflow-y: auto; */
+}
+</style>
