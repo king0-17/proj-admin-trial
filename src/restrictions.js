@@ -4,4 +4,5 @@ export const masteradmin = [
     'stream',
     'domain',
     'log',
+    'variables',
 ]

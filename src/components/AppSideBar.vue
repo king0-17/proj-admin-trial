@@ -111,6 +111,19 @@
                                     Activity Log
                                 </router-link>
                             </li>
+                            <li
+                                :class="`${
+                                    $route.fullPath == '/console/variables'
+                                        ? 'page-arrow'
+                                        : ''
+                                }`"
+                                v-if="env.VUE_APP_MODE == 'development'"
+                            >
+                                <router-link to="/console/variables">
+                                    <i class="fa fa-eye"></i>
+                                    Variables
+                                </router-link>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -159,6 +172,11 @@ export default {
             var vm = this;
             const res = await vm.authLogout();
             vm.$router.push("/auth").catch(() => {});
+        },
+    },
+    computed: {
+        env() {
+            return process.env;
         },
     },
 };
