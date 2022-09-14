@@ -16,5 +16,11 @@ module.exports = {
                 args[0].title = ".ARA Stream";
                 return args;
             })
-    }
+    },
+    devServer: {
+        public: process.env.APP_URL,
+        host: '0.0.0.0',
+        disableHostCheck: true
+    },
+    publicPath: "/"
 }
