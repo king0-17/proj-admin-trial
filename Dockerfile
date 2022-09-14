@@ -14,7 +14,7 @@ RUN npm install \
   npm update \
   npm audit fix --force
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
+# copy project files and folders to the current working directory
 COPY . .
 
 
