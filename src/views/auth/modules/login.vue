@@ -102,7 +102,7 @@
             <div class="spacer-5"></div>
             <small> All rights reserved.</small>
         </footer>
-        <table class="env-table" v-if="env.VUE_APP_MODE == 'development'">
+        <table class="env-table">
             <tr>
                 <td>VUE_APP_API_URL</td>
                 <td>{{ env.VUE_APP_API_URL }}</td>
@@ -171,14 +171,18 @@ export default {
             }
         },
     },
-    mounted() {},
+    mounted() {
+        console.log(process.env)
+    },
 };
 </script>
 
 <style>
 /* @import ".css/login.css"; */
 @import "../../../assets/karma/css/login.css";
-table,th,td{
+table,
+th,
+td {
     border: 1px solid #bbb;
     border-collapse: collapse;
 }
