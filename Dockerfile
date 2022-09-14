@@ -1,6 +1,6 @@
 FROM node:16.17 as build
 
-# install simple http server for serving static content
+# install simple http server for serving static
 RUN npm install -g http-server
 
 # make the 'app' folder the current working directory
@@ -14,10 +14,10 @@ RUN npm install \
   npm update \
   npm audit fix --force
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
+# copy project files and folders to the current working directory
 COPY . .
 
-# build app for production with minification
+
 RUN npm run build
 
 EXPOSE 8080
