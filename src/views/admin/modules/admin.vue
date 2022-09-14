@@ -83,45 +83,54 @@
                 </div>
             </div>
             <div class="search-bar mt-5"></div>
-            <b-table
-                striped
-                hover
-                outlined
-                :items="admin_data.list"
-                :fields="fields"
-            >
-                <template #cell(name)="row">
-                    {{ row.item.first_name + " " + row.item.last_name }}
-                </template>
-                <template #cell(status)="row">
-                    <span
-                        :class="`label label-${
-                            row.item.status ? 'primary' : 'default'
-                        }`"
-                        >{{ row.item.status ? "Active" : "Inactive" }}</span
-                    >
-                </template>
-                <template #cell(actions)="row">
-                    <b-button
-                        class="mb-0"
-                        variant="-secondary"
-                        size="sm"
-                        pill
-                        @click="showForm('edit', row.item)"
-                    >
-                        <i class="fa fa-fw"></i>
-                    </b-button>
-                    <b-button
-                        class="mb-0"
-                        variant="outline-secondary"
-                        size="sm"
-                        pill
-                        @click="remove(row.item)"
-                    >
-                        <i class="fa fa-trash-o"></i>
-                    </b-button>
-                </template>
-            </b-table>
+
+            <div>
+                <b-table
+                    striped
+                    hover
+                    outlined
+                    :items="admin_data.list"
+                    :fields="fields"
+                >
+                    <template #cell(name)="row">
+                        {{ row.item.first_name + " " + row.item.last_name }}
+                    </template>
+                    <template #cell(status)="row">
+                        <span
+                            :class="`label label-${
+                                row.item.status ? 'primary' : 'default'
+                            }`"
+                            >{{ row.item.status ? "Active" : "Inactive" }}</span
+                        >
+                    </template>
+                    <template #cell(actions)="row">
+                        <b-button
+                            class="mb-0"
+                            variant="-secondary"
+                            size="sm"
+                            pill
+                            @click="showForm('edit', row.item)"
+                        >
+                            <i class="fa fa-fw"></i>
+                        </b-button>
+                        <b-button
+                            class="mb-0"
+                            variant="outline-secondary"
+                            size="sm"
+                            pill
+                            @click="remove(row.item)"
+                        >
+                            <i class="fa fa-trash-o"></i>
+                        </b-button>
+                    </template>
+                </b-table>
+                <!-- <b-overlay 
+                spinner-type="grow"
+                opacity=".4"
+                show 
+                no-wrap
+                ></b-overlay> -->
+            </div>
             <div class="spacer-20"></div>
             <Pagination
                 v-if="admin_data.list.length > 0"

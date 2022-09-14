@@ -14,7 +14,7 @@ const state = {
 const actions = {
     getList({ commit, rootGetters, dispatch }, pl) {
         return new Promise(async function(resolve) {
-            const f = await fetch('http://localhost:8080/sample_data/stream-group.json')
+            const f = await fetch('/sample_data/stream-group.json')
                 .then((response) => response.json())
 
             commit('setData', f)

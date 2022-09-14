@@ -172,7 +172,7 @@ export default {
         },
     },
     mounted() {
-        console.log(process.env)
+        console.log(process.env);
     },
 };
 </script>
@@ -180,18 +180,14 @@ export default {
 <style>
 /* @import ".css/login.css"; */
 @import "../../../assets/karma/css/login.css";
-table,
-th,
-td {
+.env.table,
+.env.table th,
+.env.table td {
     border: 1px solid #bbb;
     border-collapse: collapse;
 }
 
-td {
-    padding: px;
-}
-
-table {
+.env.table {
     width: 100%;
     font-size: 10px;
 }

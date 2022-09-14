@@ -14,7 +14,9 @@ import log from './modules/log'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {},
+    state: {
+        loading: false
+    },
     mutations: {},
     actions: {},
     modules: {

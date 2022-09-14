@@ -79,10 +79,20 @@
                             <i class="fa fa-plus text-white"></i>
                             Add</b-button
                         >
+                        <b-button
+                            variant="danger"
+                            pill
+                            @click="$bvModal.show('modal-toggle')"
+                        >
+                            <i class="fa fa-fa-move text-white"></i>
+                            Control</b-button
+                        >
                     </div>
                 </div>
             </div>
+
             <div class="search-bar mt-5"></div>
+
             <b-table
                 striped
                 hover
@@ -264,6 +274,137 @@
                 </button>
             </template>
         </b-modal>
+
+        <b-modal
+            id="modal-toggle"
+            centered
+            size="sm"
+            @hidden="reset()"
+            hide-footer
+            hide-header
+        >
+            <template #modal-header>
+                <h5 class="modal-head-title">Toggle User Data</h5>
+                <!-- <button class="close" @click="$bvModal.hide('modal-toggle')">×</button> -->
+            </template>
+            <template>
+                <div class="toggle-options">
+                    <b-form-checkbox v-model="auto_position"
+                        >Position Auto</b-form-checkbox
+                    >
+                    <b-form-input
+                        id="color"
+                        type="color"
+                        v-model="toggle_color"
+                    ></b-form-input>
+                </div>
+                <div class="toggle-positions mt-2">
+                    <b-button
+                        @click="selectPostion(5)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 5 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Top Left</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(1)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 1 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Top</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(6)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 6 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Top Right</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(3)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 3 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Left</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(0)"
+                        :disabled="auto_position"
+                        disabled
+                        block
+                        variant="default"
+                        style="height: 50px"
+                    >
+                        Center</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(4)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 4 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Right</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(7)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 7 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Bottom Left</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(2)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 2 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Bottom</b-button
+                    >
+                    <b-button
+                        @click="selectPostion(8)"
+                        :disabled="auto_position"
+                        block
+                        :variant="toggle_position == 8 ? 'dark' : 'default'"
+                        style="height: 50px"
+                    >
+                        Bottom Right</b-button
+                    >
+                </div>
+
+                <div class="spacer-15"></div>
+
+                <div style="width: 100%">
+                    <b-button
+                        pi
+                        variant="primary"
+                        style="height: 50px"
+                        class="w-100"
+                    >
+                        Show</b-button
+                    >
+                    <b-button
+                        pi
+                        variant="default"
+                        style="height: 50px"
+                        class="w-100"
+                    >
+                        Hide</b-button
+                    >
+                </div>
+            </template>
+        </b-modal>
     </div>
 </template>
 
@@ -343,6 +484,44 @@ export default {
                     text: "Stream Group 2",
                 },
             ],
+            auto_position: true,
+            toggle_color: "#FFFFFF",
+            toggle_position: 0,
+            toggle_options: [
+                {
+                    value: 1,
+                    text: "Top",
+                },
+                {
+                    value: 2,
+                    text: "Bottom",
+                },
+                {
+                    value: 3,
+                    text: "Left",
+                },
+                {
+                    value: 4,
+                    text: "Right",
+                },
+                {
+                    value: 5,
+                    text: "Top Left",
+                },
+                {
+                    value: 6,
+                    text: "Top Right",
+                },
+                {
+                    value: 7,
+                    text: "Bottom Left",
+                },
+                {
+                    value: 8,
+                    text: "Bottom Right",
+                },
+            ],
+
             pl: {
                 id: null,
                 stream_group_id: null,
@@ -374,6 +553,9 @@ export default {
             streamGetOne: "getOne",
             streamCreate: "create",
         }),
+        selectPostion(val) {
+            this.toggle_position = val;
+        },
         showForm(m, r) {
             var vm = this;
             vm.mode = m;
@@ -472,4 +654,24 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.toggle-positions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    margin: 1em 0;
+}
+
+.toggle-options {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+.custom-control {
+    padding: 0 !important;
+}
+.custom-control-label {
+    margin-left: 5px;
+    font-size: 15px !important;
+}
+</style>
