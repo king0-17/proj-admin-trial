@@ -57,7 +57,7 @@ jobs:
           docker push $ECR_REGISTRY/admin-dev-006:$IMAGE_TAG
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition admin-dev-td-006 --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition vue-projc-td --query taskDefinition > task-definition.json
       - name: Fill in the new app image ID in the Amazon ECS task definition
         id: app-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
