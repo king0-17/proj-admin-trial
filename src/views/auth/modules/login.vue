@@ -93,7 +93,7 @@
                                 >Login</b-button
                             >
                         </div>
-                    </div>
+                    </div>  
                 </form> -->
             </div>
         </div>
@@ -102,6 +102,36 @@
             <div class="spacer-5"></div>
             <small> All rights reserved.</small>
         </footer>
+        <table class="env-table" v-if="env.VUE_APP_MODE == 'development'">
+            <tr>
+                <td>VUE_APP_API_URL</td>
+                <td>{{ env.VUE_APP_API_URL }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_SOCKET</td>
+                <td>{{ env.VUE_APP_SOCKET }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_MODE</td>
+                <td>{{ env.VUE_APP_MODE }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_PUSHER_APP_CLUSTER</td>
+                <td>{{ env.VUE_APP_PUSHER_APP_CLUSTER }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_PUSHER_APP_KEY</td>
+                <td>{{ env.VUE_APP_PUSHER_APP_KEY }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_WEBSOCKET_KEY</td>
+                <td>{{ env.VUE_APP_WEBSOCKET_KEY }}</td>
+            </tr>
+            <tr>
+                <td>VUE_APP_WEBSOCKET_SERVER</td>
+                <td>{{ env.VUE_APP_WEBSOCKET_SERVER }}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
@@ -117,7 +147,11 @@ export default {
             },
         };
     },
-    computed: {},
+    computed: {
+        env() {
+            return process.env;
+        },
+    },
     methods: {
         ...mapActions("auth", {
             authLogin: "loginUser",
@@ -144,4 +178,17 @@ export default {
 <style>
 /* @import ".css/login.css"; */
 @import "../../../assets/karma/css/login.css";
+table,th,td{
+    border: 1px solid #bbb;
+    border-collapse: collapse;
+}
+
+td {
+    padding: px;
+}
+
+table {
+    width: 100%;
+    font-size: 10px;
+}
 </style>
