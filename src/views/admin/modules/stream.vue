@@ -337,7 +337,7 @@
                     >
                     <b-button
                         @click="selectPostion(0)"
-                        :disabled="auto_position"
+                        disabled
                         block
                         variant="default"
                         style="height: 50px"
