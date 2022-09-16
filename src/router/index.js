@@ -14,7 +14,7 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "auth" */ '../views/auth/index.vue'),
         children: [{
-                path: '',
+                path: '/',
                 redirect: 'login'
             },
             {
@@ -33,14 +33,7 @@ const routes = [{
         children: [{
                 path: '/',
                 redirect: 'administrators'
-            },
-            // {
-            //     path: 'dashboard',
-            //     name: 'dashboard',
-            //     meta: { requiresAuth: true },
-            //     component: () =>
-            //         import ( /* webpackChunkName: "dashboard" */ '../views/admin/modules/dashboard.vue')
-            // },
+            }, ,
             {
                 path: 'administrators',
                 name: 'administrators',
