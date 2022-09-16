@@ -6,7 +6,7 @@ import store from '../store';
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/',
+        path: '',
         redirect: '/auth',
     },
     {
