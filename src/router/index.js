@@ -6,13 +6,7 @@ import store from '../store';
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '*',
-        component: () =>
-            import ( /* webpackChunkName: "404" */ '../views/404.vue'),
-        name: 'NotFound'
-    },
-    {
-        path: '',
+        path: '/',
         redirect: '/auth',
     },
     {
@@ -105,13 +99,20 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "users" */ '../views/admin/modules/users.vue')
             },
+            {
+                path: '*',
+                component: () =>
+                    import ( /* webpackChunkName: "404" */ '../views/404.vue'),
+                name: 'NotFound'
+            }
 
         ]
     },
 ]
 
+
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes
 })
