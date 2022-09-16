@@ -102,7 +102,7 @@
             <div class="spacer-5"></div>
             <small> All rights reserved.</small>
         </footer>
-        <table class="env-table">
+        <!-- <table class="env-table">
             <tr>
                 <td>VUE_APP_API_URL</td>
                 <td>{{ env.VUE_APP_API_URL }}</td>
@@ -131,7 +131,7 @@
                 <td>VUE_APP_WEBSOCKET_SERVER</td>
                 <td>{{ env.VUE_APP_WEBSOCKET_SERVER }}</td>
             </tr>
-        </table>
+        </table> -->
     </div>
 </template>
 
