@@ -79,14 +79,14 @@
                             <i class="fa fa-plus text-white"></i>
                             Add</b-button
                         >
-                        <b-button
+                        <!-- <b-button
                             variant="danger"
                             pill
                             @click="$bvModal.show('modal-toggle')"
                         >
                             <i class="fa fa-fa-move text-white"></i>
                             Control</b-button
-                        >
+                        > -->
                     </div>
                 </div>
             </div>

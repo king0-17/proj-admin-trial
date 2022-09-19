@@ -130,6 +130,113 @@
         </div>
 
         <div class="sidebar-line"></div>
+        <div class="sidebar-module">
+            <h3 class="text-center">Toggle Watermark</h3>
+            <br>
+            <div class="toggle-options">
+                <b-form-checkbox v-model="auto_position"
+                    >Position Auto</b-form-checkbox
+                >
+                <b-form-input
+                    id="color"
+                    type="color"
+                    v-model="toggle_color"></b-form-input>
+            </div>
+            <div class="toggle-positions mt-2">
+                <b-button
+                    @click="selectPostion(5)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 5 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Top Left</b-button
+                >
+                <b-button
+                    @click="selectPostion(1)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 1 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Top</b-button
+                >
+                <b-button
+                    @click="selectPostion(6)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 6 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Top Right</b-button
+                >
+                <b-button
+                    @click="selectPostion(3)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 3 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Left</b-button
+                >
+                <b-button
+                    @click="selectPostion(0)"
+                    disabled
+                    block
+                    variant="default"
+                    style="height: 50px">
+                    Center</b-button
+                >
+                <b-button
+                    @click="selectPostion(4)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 4 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Right</b-button
+                >
+                <b-button
+                    @click="selectPostion(7)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 7 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Bottom Left</b-button
+                >
+                <b-button
+                    @click="selectPostion(2)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 2 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Bottom</b-button
+                >
+                <b-button
+                    @click="selectPostion(8)"
+                    :disabled="auto_position"
+                    block
+                    :variant="toggle_position == 8 ? 'dark' : 'default'"
+                    style="height: 50px">
+                    Bottom Right</b-button
+                >
+            </div>
+
+            <div class="spacer-15"></div>
+
+            <div style="width: 100%">
+                <b-button
+                    pi
+                    variant="primary"
+                    style="height: 30px"
+                    class="w-100">
+                    Show</b-button
+                >
+                <b-button
+                    pi
+                    variant="default"
+                    style="height: 30px"
+                    class="w-100">
+                    Hide</b-button
+                >
+            </div>
+            
+        </div>
     </div>
 </template>
 
@@ -140,12 +247,18 @@ export default {
     data() {
         return {
             tab: 1,
+            auto_position: true,
+            toggle_color: "#FFFFFF",
+            toggle_position: 0,
         };
     },
     methods: {
         ...mapActions("auth", {
             authLogout: "logoutUser",
         }),
+        selectPostion(val) {
+            this.toggle_position = val;
+        },
         async logoutUser() {
             var vm = this;
             const res = await vm.authLogout();
@@ -155,4 +268,28 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.toggle-positions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    margin: 1em 0;
+}
+
+.toggle-positions > button {
+    font-size: 12px;
+}
+
+.toggle-options {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+.custom-control {
+    padding: 0 !important;
+}
+.custom-control-label {
+    margin-left: 5px;
+    font-size: 15px !important;
+}
+</style>
