@@ -87,27 +87,13 @@ const actions = {
     },
     create({ rootGetters, dispatch }, pl) {
         return new Promise(function(resolve) {
-            var temp = {
-                success: false,
-                message: '',
-            }
-
-            $api.post('/stream-group/register', pl, {
+            $api.post('/stream-group/create', pl, {
                     headers: { 'Authorization': rootGetters['auth/token_bearer'] }
                 })
                 .then(function(res) {
-                    console.log(res)
-                        // if (res.data.status == 1) {
-                        //     temp.success = true
-                        //     temp.message = 'Success'
-                        //     resolve(temp)
-                        // } else {
-                        //     var msg = res.data.messaage
-                        //     if (msg.name) {
-                        //         temp.message = msg.name[0]
-                        //     }
-                        //     resolve(temp)
-                        // }
+                    if (res.status == 200) {
+                        resolve(res)
+                    }
                 })
                 .catch(function(err) {
                     if (err.response.status == 401) {
@@ -123,37 +109,12 @@ const actions = {
     },
     update({ rootGetters, dispatch }, pl) {
         return new Promise(function(resolve) {
-            var temp = {
-                success: false,
-                message: '',
-            }
-
-            var new_pl = {
-                id: pl.id,
-                firstname: pl.firstname,
-                lastname: pl.lastname,
-                email: pl.email,
-                phone: pl.phone,
-                birthdate: pl.birthdate,
-                type: pl.type,
-                group_id: pl.group_id,
-                username: pl.username,
-            }
-
-            $api.post('/stream-group/update', new_pl, {
+            $api.post('/stream-group/update', pl, {
                     headers: { 'Authorization': rootGetters['auth/token_bearer'] }
                 })
                 .then(function(res) {
-                    if (res.data.status == 1) {
-                        temp.success = true
-                        temp.message = 'Success'
-                        resolve(temp)
-                    } else {
-                        var msg = res.data.messaage
-                        if (msg.name) {
-                            temp.message = msg.name[0]
-                        }
-                        resolve(temp)
+                    if (res.status == 200) {
+                        resolve(res)
                     }
                 })
                 .catch(function(err) {
@@ -161,6 +122,9 @@ const actions = {
                         dispatch('auth/logoutUser', {}, { root: true }).then(() => {
                             window.location.reload()
                         })
+                    }
+                    if (err.response.status == 422) {
+                        resolve(err.response)
                     }
                 })
         })
@@ -303,7 +267,7 @@ const actions = {
 
 const mutations = {
         setData(state, d) {
-            state.data.list = d.list
+            state.data.list = d.data
             state.data.links = d.links
             state.data.current_page = d.current_page
             state.data.last_page = d.last_page

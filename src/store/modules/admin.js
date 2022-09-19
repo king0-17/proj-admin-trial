@@ -14,27 +14,27 @@ const state = {
 const actions = {
     getList({ commit, rootGetters, dispatch }, pl) {
         return new Promise(async function(resolve) {
-            const f = await fetch('/sample_data/admin.json')
-                .then((response) => response.json())
+            // const f = await fetch('/sample_data/admin.json')
+            //     .then((response) => response.json())
 
-            commit('setData', f)
+            // commit('setData', f)
 
-            // $api.post(`/admin/list${pl.page_no ? '?page=' + pl.page_no : ''}`, pl, {
-            //         headers: { 'Authorization': rootGetters['auth/token_bearer'] }
-            //     })
-            //     .then(function(res) {
-            //         if (res.data.status == 1) {
-            //             commit('setData', res.data.data)
-            //             resolve(true)
-            //         }
-            //     })
-            //     .catch(function(err) {
-            //         if (err.response.status == 401) {
-            //             dispatch('auth/logoutUser', {}, { root: true }).then(() => {
-            //                 window.location.reload()
-            //             })
-            //         }
-            //     })
+            $api.post(`/admin/list${pl.page_no ? '?page=' + pl.page_no : ''}`, pl, {
+                    headers: { 'Authorization': rootGetters['auth/token_bearer'] }
+                })
+                .then(function(res) {
+                    if (res.status == 200) {
+                        commit('setData', res.data)
+                        resolve(true)
+                    }
+                })
+                .catch(function(err) {
+                    if (err.response.status == 401) {
+                        dispatch('auth/logoutUser', {}, { root: true }).then(() => {
+                            window.location.reload()
+                        })
+                    }
+                })
         })
     },
     getOne({ rootGetters, dispatch }, pl) {
@@ -87,27 +87,13 @@ const actions = {
     },
     create({ rootGetters, dispatch }, pl) {
         return new Promise(function(resolve) {
-            var temp = {
-                success: false,
-                message: '',
-            }
-
-            $api.post('/admin/register', pl, {
+            $api.post('/admin/create', pl, {
                     headers: { 'Authorization': rootGetters['auth/token_bearer'] }
                 })
                 .then(function(res) {
-                    console.log(res)
-                        // if (res.data.status == 1) {
-                        //     temp.success = true
-                        //     temp.message = 'Success'
-                        //     resolve(temp)
-                        // } else {
-                        //     var msg = res.data.messaage
-                        //     if (msg.name) {
-                        //         temp.message = msg.name[0]
-                        //     }
-                        //     resolve(temp)
-                        // }
+                    if (res.status == 200) {
+                        resolve(res)
+                    }
                 })
                 .catch(function(err) {
                     if (err.response.status == 401) {
@@ -123,37 +109,12 @@ const actions = {
     },
     update({ rootGetters, dispatch }, pl) {
         return new Promise(function(resolve) {
-            var temp = {
-                success: false,
-                message: '',
-            }
-
-            var new_pl = {
-                id: pl.id,
-                firstname: pl.firstname,
-                lastname: pl.lastname,
-                email: pl.email,
-                phone: pl.phone,
-                birthdate: pl.birthdate,
-                type: pl.type,
-                group_id: pl.group_id,
-                username: pl.username,
-            }
-
-            $api.post('/admin/update', new_pl, {
+            $api.post('/admin/update', pl, {
                     headers: { 'Authorization': rootGetters['auth/token_bearer'] }
                 })
                 .then(function(res) {
-                    if (res.data.status == 1) {
-                        temp.success = true
-                        temp.message = 'Success'
-                        resolve(temp)
-                    } else {
-                        var msg = res.data.messaage
-                        if (msg.name) {
-                            temp.message = msg.name[0]
-                        }
-                        resolve(temp)
+                    if (res.status == 200) {
+                        resolve(res)
                     }
                 })
                 .catch(function(err) {
@@ -161,6 +122,9 @@ const actions = {
                         dispatch('auth/logoutUser', {}, { root: true }).then(() => {
                             window.location.reload()
                         })
+                    }
+                    if (err.response.status == 422) {
+                        resolve(err.response)
                     }
                 })
         })
@@ -303,12 +267,20 @@ const actions = {
 
 const mutations = {
         setData(state, d) {
-            state.data.list = d.list
+            state.data.list = d.data
             state.data.links = d.links
             state.data.current_page = d.current_page
             state.data.last_page = d.last_page
             state.data.per_page = d.per_page
             state.data.total = d.total
+        },
+        clearData(state) {
+            state.data.list = []
+            state.data.links = []
+            state.data.current_page = 0
+            state.data.last_page = 0
+            state.data.per_page = 0
+            state.data.total = 0
         },
         setusers(state, d) {
             state.users = d

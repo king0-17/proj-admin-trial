@@ -12,14 +12,14 @@
                 <img
                     src="@/assets/karma/images/icons/social/32/favicon-32x32.png"
                     alt
-                    class="avatar"
-                />
+                    class="avatar" />
 
                 <ul class="sidebar-profile-list">
                     <li>
                         <h3>admin</h3>
                     </li>
                     <li>
+                        <a href="#">Account</a> |
                         <a
                             href="javascript:void(0)"
                             @click.prevent="logoutUser()"
@@ -47,8 +47,7 @@
         <div class="tab-content">
             <div
                 id="sidebar-tab-1"
-                :class="`tab-pane ${tab == 1 ? 'active' : ''} clearfix`"
-            >
+                :class="`tab-pane ${tab == 1 ? 'active' : ''} clearfix`">
                 <div class="sidebar-module">
                     <nav class="sidebar-nav-v2">
                         <ul>
@@ -57,8 +56,7 @@
                                     $route.fullPath == '/console/administrators'
                                         ? 'page-arrow'
                                         : ''
-                                }`"
-                            >
+                                }`">
                                 <router-link to="/console/administrators">
                                     <i class="fa fa-user-md"></i> Administrator
                                 </router-link>
@@ -68,8 +66,7 @@
                                     $route.fullPath == '/console/stream-group'
                                         ? 'page-arrow'
                                         : ''
-                                }`"
-                            >
+                                }`">
                                 <router-link to="/console/stream-group">
                                     <i class="fa fa-th-large"></i>
                                     Stream Group
@@ -80,8 +77,7 @@
                                     $route.fullPath == '/console/stream'
                                         ? 'page-arrow'
                                         : ''
-                                }`"
-                            >
+                                }`">
                                 <router-link to="/console/stream">
                                     <i class="fa fa-caret-square-o-right"></i>
                                     Stream
@@ -92,8 +88,7 @@
                                     $route.fullPath == '/console/domain'
                                         ? 'page-arrow'
                                         : ''
-                                }`"
-                            >
+                                }`">
                                 <router-link to="/console/domain">
                                     <i class="fa fa-link"></i>
                                     Domain
@@ -104,8 +99,7 @@
                                     $route.fullPath == '/console/log'
                                         ? 'page-arrow'
                                         : ''
-                                }`"
-                            >
+                                }`">
                                 <router-link to="/console/log">
                                     <i class="fa fa-eye"></i>
                                     Activity Log
@@ -117,21 +111,18 @@
             </div>
             <div
                 id="sidebar-tab-2"
-                :class="`tab-pane ${tab == 2 ? 'active' : ''} clearfix`"
-            >
+                :class="`tab-pane ${tab == 2 ? 'active' : ''} clearfix`">
                 <div class="sidebar-module">
                     <textarea
                         id="note"
                         class="form-control noresizing"
                         placeholder="Note"
                         required=""
-                        aria-required="true"
-                    ></textarea>
+                        aria-required="true"></textarea>
                     <div class="spacer-10"></div>
                     <button
                         class="btn btn-block btn-primary"
-                        onclick="save_note()"
-                    >
+                        onclick="save_note()">
                         Save
                     </button>
                 </div>

@@ -1,5 +1,5 @@
 {
-    "list": [{
+    "data": [{
             "id": 1,
             "username": "masteradmin",
             "action": "Added new stream",

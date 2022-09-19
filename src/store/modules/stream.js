@@ -303,7 +303,7 @@ const actions = {
 
 const mutations = {
         setData(state, d) {
-            state.data.list = d.list
+            state.data.list = d.data
             state.data.links = d.links
             state.data.current_page = d.current_page
             state.data.last_page = d.last_page

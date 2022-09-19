@@ -174,7 +174,7 @@ const getters = {
         return state.profile.id
     },
     user_type(state) {
-        return state.profile.type
+        return 1 //state.profile.type
     },
     profile(state) {
         return state.profile

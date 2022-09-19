@@ -28,5 +28,20 @@ Vue.mixin({
             }
             return user_type
         },
+        formatUserStatus(val) {
+            var status
+            switch (val) {
+                case 1:
+                    status = 'Inactive'
+                    break;
+                case 2:
+                    status = 'Active'
+                    break;
+
+                default:
+                    break;
+            }
+            return status
+        },
     },
 })

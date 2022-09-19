@@ -79,4 +79,12 @@ small.form-text {
     grid-template-columns: 1fr 12fr;
     align-items: center;
 }
+
+.toast:not(.show) {
+    display: block !important;
+}
+
+.toast-header {
+    justify-content: space-between;
+}
 </style>

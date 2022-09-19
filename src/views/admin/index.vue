@@ -18,17 +18,14 @@
 
                 <router-view></router-view>
 
-                <footer id="footer-main" class="footer-sticky">
+                <!-- <footer id="footer-main" class="footer-sticky">
                     <div class="footer-main-inner">
                         <div class="pull-left">
                             <p>Copyright © 2013 CreativeMilk</p>
                         </div>
                     </div>
-                    <!-- End .footer-main-inner -->
-                </footer>
-                <!-- End #footer-main -->
+                </footer> -->
             </div>
-            <!-- End #content -->
         </div>
     </div>
 </template>

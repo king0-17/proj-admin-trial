@@ -1,5 +1,5 @@
 {
-    "list": [{
+    "data": [{
             "id": 1,
             "stream_group_id": 1,
             "name": "Stream-01",

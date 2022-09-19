@@ -4,7 +4,7 @@
             <div>
                 <div class="pull-left">
                     <form>
-                        <div class="toolbar-field">
+                        <!-- <div class="toolbar-field">
                             <strong>Date from</strong>
                             <b-input-group class="mb-3">
                                 <b-form-input
@@ -45,24 +45,22 @@
                                     ></b-form-datepicker>
                                 </b-input-group-append>
                             </b-input-group>
-                        </div>
+                        </div> -->
                         <div class="toolbar-field">
                             <strong>Name</strong>
                             <b-input
                                 type="text"
                                 class="form-control"
-                                id="search_key"
+                                id="search"
                                 placeholder="Name"
-                                v-model="filters.search_key"
-                            />
+                                v-model="filters.search" />
                         </div>
                         <div class="toolbar-field">
                             <strong>&nbsp;</strong>
                             <button
                                 class="btn btn-secondary"
-                                @click.prevent="getList()"
-                            >
-                                Search
+                                @click.prevent="getList()">
+                                Filter
                             </button>
                         </div>
                     </form>
@@ -74,8 +72,7 @@
                             variant="warning"
                             pill
                             @click="showForm('add')"
-                            id="create"
-                        >
+                            id="create">
                             <i class="fa fa-plus text-white"></i>
                             Add</b-button
                         >
@@ -88,8 +85,7 @@
                 hover
                 outlined
                 :items="stream_group_data.list"
-                :fields="fields"
-            >
+                :fields="fields">
                 <template #cell(url)="row">
                     <div href="jdivvascript:void(0)" class="overflow-e">
                         {{ row.item.url }}
@@ -101,8 +97,7 @@
                         variant="-secondary"
                         size="sm"
                         pill
-                        @click="showForm('edit', row.item)"
-                    >
+                        @click="showForm('edit', row.item)">
                         <i class="fa fa-fw"></i>
                     </b-button>
                     <b-button
@@ -110,8 +105,7 @@
                         variant="outline-secondary"
                         size="sm"
                         pill
-                        @click="remove(row.item)"
-                    >
+                        @click="remove(row.item)">
                         <i class="fa fa-trash-o"></i>
                     </b-button>
                 </template>
@@ -120,8 +114,7 @@
             <Pagination
                 v-if="stream_group_data.list.length > 0"
                 :data="stream_group_data"
-                @emitpage="getList"
-            />
+                @emitpage="getList" />
         </div>
 
         <b-modal id="modal-form" centered @hidden="reset()">
@@ -141,15 +134,13 @@
                                 <b-form-group
                                     label="Name:"
                                     label-for="name"
-                                    :description="re.name"
-                                >
+                                    :description="re.name">
                                     <b-form-input
                                         id="name"
                                         v-model="pl.name"
                                         type="text"
                                         placeholder="Enter name"
-                                        required
-                                    ></b-form-input>
+                                        required></b-form-input>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -159,8 +150,7 @@
             <template #modal-footer>
                 <button
                     class="btn btn-default"
-                    @click="$bvModal.hide('modal-form')"
-                >
+                    @click="$bvModal.hide('modal-form')">
                     Cancel
                 </button>
                 <button class="btn btn-success" @click.prevent="submit()">
@@ -184,7 +174,7 @@ export default {
             filters: {
                 date_from: "",
                 date_to: "",
-                search_key: "",
+                search: "",
             },
             fields: [
                 { key: "name", label: "Name" },
@@ -223,39 +213,47 @@ export default {
 
             vm.$bvModal.show("modal-form");
         },
-        getList(n) {
+        getList(n, reset) {
             var vm = this;
 
             var pl = {
                 page_no: n ? n : 1,
                 limit: 50,
-                sort_column: "created_at",
+                sort_column: "username",
                 sort_order: "desc",
             };
 
-            // if (isReset) {
-            //     vm.filters.search_key = "";
-            //     vm.dateRangePicker = "";
-            //     vm.filters.from = "";
-            //     vm.filters.to = "";
-            // }
-
-            if (vm.filters.search_key) {
-                pl.search_key = vm.filters.search_key;
+            if (reset) {
+                vm.filters.search = "";
+                vm.filters.type = null;
             }
 
-            // if (vm.filters.from && vm.filters.to && vm.filters.to) {
-            //     pl.from = vm.filters.from;
-            //     pl.to = vm.filters.to;
-            // }
+            if (vm.filters.search) {
+                pl.search = vm.filters.search;
+            }
 
+            vm.busy = true;
             vm.streamGroupGetList(pl);
+            setTimeout(() => {
+                vm.busy = false;
+            }, 1000);
         },
         async submit() {
             var vm = this;
             const res = await vm.streamGroupCreate(vm.pl);
 
-            if (res.status == 422) {
+            if (res.status == 200) {
+                if (res.data.status == 2) {
+                    vm.$bvModal.hide("modal-form");
+                    vm.$bvToast.toast(`Created stream group`, {
+                        title: `Success`,
+                        toaster: `b-toaster-top-right`,
+                        solid: true,
+                        variant: "success",
+                        appendToast: true,
+                    });
+                }
+            } else if (res.status == 422) {
                 var e = res.data.errors;
                 vm.re.id = e.id[0];
                 vm.re.name = e.name[0];

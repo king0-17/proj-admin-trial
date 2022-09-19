@@ -5,65 +5,35 @@
                 <div class="pull-left">
                     <form>
                         <div class="toolbar-field">
-                            <strong>Date from</strong>
-                            <b-input-group class="mb-3">
-                                <b-form-input
-                                    id="example-input"
-                                    class="date-input"
-                                    v-model="filters.date_from"
-                                    type="text"
-                                    placeholder="YYYY-MM-DD"
-                                    autocomplete="off"
-                                ></b-form-input>
-                                <b-input-group-append>
-                                    <b-form-datepicker
-                                        v-model="filters.date_from"
-                                        button-only
-                                        right
-                                        locale="en-US"
-                                    ></b-form-datepicker>
-                                </b-input-group-append>
-                            </b-input-group>
-                        </div>
-                        <div class="toolbar-field">
-                            <strong>Date to</strong>
-                            <b-input-group class="mb-3">
-                                <b-form-input
-                                    id="example-input"
-                                    class="date-input"
-                                    v-model="filters.date_to"
-                                    type="text"
-                                    placeholder="YYYY-MM-DD"
-                                    autocomplete="off"
-                                ></b-form-input>
-                                <b-input-group-append>
-                                    <b-form-datepicker
-                                        v-model="filters.date_to"
-                                        button-only
-                                        right
-                                        locale="en-US"
-                                    ></b-form-datepicker>
-                                </b-input-group-append>
-                            </b-input-group>
-                        </div>
-                        <div class="toolbar-field">
-                            <strong>Username</strong>
+                            <strong>Search</strong>
                             <b-input
                                 type="text"
                                 class="form-control"
-                                id="search_key"
-                                placeholder="Username"
-                                v-model="filters.search_key"
-                            />
+                                id="search"
+                                placeholder="Enter keyword"
+                                v-model="filters.search" />
+                        </div>
+                        <div class="toolbar-field">
+                            <strong>Type</strong>
+                            <b-select
+                                class="form-control"
+                                v-model="filters.type"
+                                :options="type_options"></b-select>
                         </div>
                         <div class="toolbar-field">
                             <strong>&nbsp;</strong>
-                            <button
-                                class="btn btn-secondary"
-                                @click.prevent="getList()"
-                            >
-                                Search
-                            </button>
+                            <b-button
+                                class="btn btn-default"
+                                variant="default"
+                                @click.prevent="getList(1)">
+                                Filter
+                            </b-button>
+                            <b-button
+                                class="btn btn-default"
+                                variant="default"
+                                @click.prevent="getList(1, true)">
+                                Reset
+                            </b-button>
                         </div>
                     </form>
                 </div>
@@ -74,8 +44,7 @@
                             variant="warning"
                             pill
                             @click="showForm('add')"
-                            id="create"
-                        >
+                            id="create">
                             <i class="fa fa-plus text-white"></i>
                             Add</b-button
                         >
@@ -90,17 +59,26 @@
                     hover
                     outlined
                     :items="admin_data.list"
-                    :fields="fields"
-                >
+                    :fields="fields">
                     <template #cell(name)="row">
                         {{ row.item.first_name + " " + row.item.last_name }}
                     </template>
                     <template #cell(status)="row">
                         <span
                             :class="`label label-${
-                                row.item.status ? 'primary' : 'default'
+                                row.item.status == 2
+                                    ? 'primary'
+                                    : row.item.status == 1
+                                    ? 'default'
+                                    : ''
                             }`"
-                            >{{ row.item.status ? "Active" : "Inactive" }}</span
+                            >{{
+                                row.item.status == 2
+                                    ? "Active"
+                                    : row.item.status == 1
+                                    ? "Inactive"
+                                    : ""
+                            }}</span
                         >
                     </template>
                     <template #cell(actions)="row">
@@ -109,8 +87,7 @@
                             variant="-secondary"
                             size="sm"
                             pill
-                            @click="showForm('edit', row.item)"
-                        >
+                            @click="showForm('edit', row.item)">
                             <i class="fa fa-fw"></i>
                         </b-button>
                         <b-button
@@ -118,30 +95,44 @@
                             variant="outline-secondary"
                             size="sm"
                             pill
-                            @click="remove(row.item)"
-                        >
+                            @click="remove(row.item)">
                             <i class="fa fa-trash-o"></i>
                         </b-button>
                     </template>
                 </b-table>
-                <!-- <b-overlay 
-                spinner-type="grow"
-                opacity=".4"
-                show 
-                no-wrap
-                ></b-overlay> -->
             </div>
             <div class="spacer-20"></div>
             <Pagination
                 v-if="admin_data.list.length > 0"
                 :data="admin_data"
-                @emitpage="getList"
-            />
+                @emitpage="getList" />
         </div>
 
-        <b-modal id="modal-form" centered size="lg" @hidden="reset()">
+        <b-overlay
+            :show="busy"
+            no-wrap
+            opacity=".3"
+            spinner-type="grow"></b-overlay>
+
+        <b-modal
+            id="modal-form"
+            centered
+            size="md"
+            @hidden="reset()"
+            body-class="position-static">
+            <b-overlay
+                :show="busy"
+                no-wrap
+                opacity=".3"
+                spinner-type="grow"></b-overlay>
             <template #modal-header>
-                <h5 class="modal-head-title">Add new admin</h5>
+                <h5 class="modal-head-title">
+                    {{
+                        mode == "add"
+                            ? "Add new administrator"
+                            : "Edit administrator"
+                    }}
+                </h5>
                 <button class="close" @click="$bvModal.hide('modal-form')">
                     ×
                 </button>
@@ -156,30 +147,26 @@
                                 <b-form-group
                                     label="Type:"
                                     label-for="type"
-                                    :description="re.type"
-                                >
+                                    :description="re.type">
                                     <b-form-select
                                         id="type"
                                         class="form-control"
                                         v-model="pl.type"
                                         :options="type_options"
-                                        required
-                                    ></b-form-select>
+                                        required></b-form-select>
                                 </b-form-group>
                             </b-col>
-                            <b-col>
+                            <b-col cols="">
                                 <b-form-group
-                                    label="Email Address:"
-                                    label-for="email"
-                                    :description="re.email"
-                                >
-                                    <b-form-input
-                                        id="email"
-                                        v-model="pl.email"
-                                        type="email"
-                                        placeholder="Enter email address"
-                                        required
-                                    ></b-form-input>
+                                    label="Status:"
+                                    label-for="type"
+                                    :description="re.status">
+                                    <b-form-select
+                                        id="status"
+                                        class="form-control"
+                                        v-model="pl.status"
+                                        :options="status_options"
+                                        required></b-form-select>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -188,30 +175,43 @@
                                 <b-form-group
                                     label="First Name:"
                                     label-for="firstname"
-                                    :description="re.first_name"
-                                >
+                                    :description="re.first_name">
                                     <b-form-input
                                         id="firstname"
                                         v-model="pl.first_name"
                                         type="text"
                                         placeholder="Enter first name"
-                                        required
-                                    ></b-form-input>
+                                        required></b-form-input>
                                 </b-form-group>
                             </b-col>
+                        </b-row>
+                        <b-row>
                             <b-col>
                                 <b-form-group
                                     label="Last Name:"
                                     label-for="lastname"
-                                    :description="re.last_name"
-                                >
+                                    :description="re.last_name">
                                     <b-form-input
                                         id="lastname"
                                         v-model="pl.last_name"
                                         type="text"
                                         placeholder="Enter last name"
-                                        required
-                                    ></b-form-input>
+                                        required></b-form-input>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-form-group
+                                    label="Email Address:"
+                                    label-for="email"
+                                    :description="re.email">
+                                    <b-form-input
+                                        id="email"
+                                        v-model="pl.email"
+                                        type="email"
+                                        placeholder="Enter email address"
+                                        required></b-form-input>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -220,33 +220,46 @@
                                 <b-form-group
                                     label="Username:"
                                     label-for="username"
-                                    :description="re.username"
-                                >
+                                    :description="re.username">
                                     <b-form-input
                                         id="username"
                                         v-model="pl.username"
                                         type="text"
                                         placeholder="Enter username"
                                         autocomplete="off"
-                                        required
-                                    ></b-form-input>
+                                        required></b-form-input>
                                 </b-form-group>
                             </b-col>
+                        </b-row>
+                        <b-row v-show="mode != 'edit'">
                             <b-col>
                                 <b-form-group
                                     label="Password:"
                                     label-for="password"
-                                    :description="re.password"
-                                    v-show="mode != 'edit'"
-                                >
+                                    :description="re.password">
                                     <b-form-input
                                         id="password"
                                         v-model="pl.password"
                                         type="password"
                                         placeholder="Enter password"
                                         autocomplete="new-password"
-                                        required
-                                    ></b-form-input>
+                                        required></b-form-input>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                        <b-row v-show="mode != 'edit'">
+                            <b-col>
+                                <b-form-group
+                                    label="Confirm Password:"
+                                    label-for="Confirm password"
+                                    :description="re.password_confirmation">
+                                    <b-form-input
+                                        id="password"
+                                        v-model="pl.password_confirmation"
+                                        type="password"
+                                        placeholder="Enter password confirmation"
+                                        autocomplete="new-password"
+                                        required></b-form-input>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -256,13 +269,16 @@
             <template #modal-footer>
                 <button
                     class="btn btn-default"
-                    @click="$bvModal.hide('modal-form')"
-                >
+                    @click="$bvModal.hide('modal-form')">
                     Cancel
                 </button>
-                <button class="btn btn-success" @click.prevent="submit()">
+
+                <b-button
+                    ref="button"
+                    variant="success"
+                    @click.prevent="submit()">
                     Submit
-                </button>
+                </b-button>
             </template>
         </b-modal>
     </div>
@@ -277,11 +293,11 @@ export default {
     },
     data() {
         return {
+            busy: false,
             mode: "",
             filters: {
-                date_from: "",
-                date_to: "",
-                search_key: "",
+                type: null,
+                search: "",
             },
             fields: [
                 "name",
@@ -293,13 +309,13 @@ export default {
                         return this.formatUserType(value);
                     },
                 },
-                {
-                    key: "last_login",
-                    label: "Last Logged In",
-                },
                 "status",
-                { key: "updated_by", label: "Updated By" },
                 { key: "actions", label: "Actions" },
+                // {
+                //     key: "last_login",
+                //     label: "Last Logged In",
+                // },
+                // { key: "updated_by", label: "Updated By" },
             ],
             type_options: [
                 {
@@ -308,14 +324,32 @@ export default {
                 },
                 {
                     value: 1,
-                    text: "Master Admin",
+                    text: "Admin Level III",
                 },
                 {
                     value: 2,
-                    text: "Admin",
+                    text: "Admin Level II",
+                },
+                {
+                    value: 3,
+                    text: "Admin Level I",
                 },
 
                 // { value: "d", text: "This one is disabled", disabled: true },
+            ],
+            status_options: [
+                {
+                    value: null,
+                    text: "Select status",
+                },
+                {
+                    value: 1,
+                    text: "Inactive",
+                },
+                {
+                    value: 2,
+                    text: "Active",
+                },
             ],
             pl: {
                 id: null,
@@ -324,7 +358,9 @@ export default {
                 last_name: null,
                 username: null,
                 password: null,
+                password_confirmation: null,
                 type: null,
+                status: null,
             },
             re: {
                 id: null,
@@ -332,8 +368,10 @@ export default {
                 first_name: null,
                 last_name: null,
                 username: null,
+                password_confirmation: null,
                 password: null,
                 type: null,
+                status: null,
             },
         };
     },
@@ -347,62 +385,84 @@ export default {
             adminGetList: "getList",
             adminGetOne: "getOne",
             adminCreate: "create",
+            adminUpdate: "update",
         }),
         showForm(m, r) {
             var vm = this;
             vm.mode = m;
             if (m == "edit") {
                 vm.pl.id = r.id;
-                vm.pl.type = r.type;
                 vm.pl.username = r.username;
-                vm.pl.password = r.password;
+                // vm.pl.password = r.password;
+                // vm.pl.password_confirmation = r.password_confirmation;
                 vm.pl.email = r.email;
                 vm.pl.first_name = r.first_name;
                 vm.pl.last_name = r.last_name;
+                vm.pl.type = r.type;
+                vm.pl.status = r.status;
             }
 
             vm.$bvModal.show("modal-form");
         },
-        getList(n) {
+        getList(n, reset) {
             var vm = this;
 
             var pl = {
                 page_no: n ? n : 1,
                 limit: 50,
-                sort_column: "created_at",
+                sort_column: "username",
                 sort_order: "desc",
             };
 
-            // if (isReset) {
-            //     vm.filters.search_key = "";
-            //     vm.dateRangePicker = "";
-            //     vm.filters.from = "";
-            //     vm.filters.to = "";
-            // }
-
-            if (vm.filters.search_key) {
-                pl.search_key = vm.filters.search_key;
+            if (reset) {
+                vm.filters.search = "";
+                vm.filters.type = null;
             }
 
-            // if (vm.filters.from && vm.filters.to && vm.filters.to) {
-            //     pl.from = vm.filters.from;
-            //     pl.to = vm.filters.to;
-            // }
+            if (vm.filters.search) {
+                pl.search = vm.filters.search;
+            }
+            if (vm.filters.type) {
+                pl.type = vm.filters.type;
+            }
 
+            vm.busy = true;
             vm.adminGetList(pl);
+            setTimeout(() => {
+                vm.busy = false;
+            }, 1000);
         },
         async submit() {
             var vm = this;
-            const res = await vm.adminCreate(vm.pl);
-
-            if (res.status == 422) {
+            vm.busy = true;
+            const res =
+                vm.mode == ""
+                    ? await vm.adminCreate(vm.pl)
+                    : await vm.adminUpdate(vm.pl);
+            vm.busy = false;
+            if (res.status == 200) {
+                if (res.data.status == 2) {
+                    vm.$bvModal.hide("modal-form");
+                    vm.$bvToast.toast(`Created new administrator`, {
+                        title: `Success`,
+                        toaster: `b-toaster-top-right`,
+                        solid: true,
+                        variant: "success",
+                        appendToast: true,
+                    });
+                }
+            } else if (res.status == 422) {
                 var e = res.data.errors;
-                vm.re.type = e.type[0];
-                vm.re.email = e.email[0];
-                vm.re.first_name = e.first_name[0];
-                vm.re.last_name = e.last_name[0];
-                vm.re.username = e.username[0];
-                vm.re.password = e.password[0];
+                vm.re.type = e.type ? e.type[0] : null;
+                vm.re.status = e.status ? e.status[0] : null;
+                vm.re.email = e.email ? e.email[0] : null;
+                vm.re.first_name = e.first_name ? e.first_name[0] : null;
+                vm.re.last_name = e.last_name ? e.last_name[0] : null;
+                vm.re.username = e.username ? e.username[0] : null;
+                vm.re.password = e.password ? e.password[0] : null;
+                vm.re.password_confirmation = e.password_confirmation
+                    ? e.password_confirmation[0]
+                    : null;
             }
         },
         async remove(r) {
@@ -418,23 +478,26 @@ export default {
             });
         },
         reset() {
-            console.log("reset");
             var vm = this;
             vm.pl.id = null;
-            vm.pl.type = null;
             vm.pl.email = null;
             vm.pl.first_name = null;
             vm.pl.last_name = null;
             vm.pl.username = null;
             vm.pl.password = null;
+            vm.pl.password_confirmation = null;
+            vm.pl.type = null;
+            vm.pl.status = null;
 
             vm.re.id = null;
-            vm.re.type = null;
             vm.re.email = null;
             vm.re.first_name = null;
             vm.re.last_name = null;
             vm.re.username = null;
             vm.re.password = null;
+            vm.re.password_confirmation = null;
+            vm.re.type = null;
+            vm.re.status = null;
         },
     },
     mounted() {
