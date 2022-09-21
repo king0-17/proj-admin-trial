@@ -13,7 +13,7 @@ module.exports = {
         config
             .plugin('html')
             .tap(args => {
-                args[0].title = ".ARA Stream";
+                args[0].title = ".ARA Streamssss";
                 return args;
             })
     },
